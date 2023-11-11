@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Backend\CategoryController;
+use App\Http\Controllers\Backend\TestimonialController;
+use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -16,9 +18,11 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::get('/', function () {
-    return view('frontend.pages.home');
-});
+// Route::get('/', function () {
+//     return view('frontend.pages.home');
+// });
+
+Route::get('/', [HomeController::class, 'home']);
 
 Route::get('/dashboard', function () {
     return view('backend.layouts.pages.dashboard');
@@ -38,5 +42,6 @@ Route::middleware('auth')->group(function () {
 // Resource Route
 
 Route::resource('category', CategoryController::class);
+Route::resource('testimonial', TestimonialController::class);
 
 require __DIR__ . '/auth.php';

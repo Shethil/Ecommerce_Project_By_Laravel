@@ -51,3 +51,4 @@
 <script src="{{ asset('assets/backend') }}/js/base/loader.js"></script>
 
 <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css" />

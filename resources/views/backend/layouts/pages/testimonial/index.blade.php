@@ -1,10 +1,9 @@
 @extends('backend.layouts.master')
 
 @section('title')
-    Category Index
+    Testimonial Index
 @endsection
 
-{!! Toastr::message() !!}
 
 @push('admin_style')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
@@ -19,11 +18,11 @@
 
 @section('admin_content')
     <div class="row">
-        <h1>Category List Table</h1>
+        <h1>Testimonial List Table</h1>
         <div class="col-12">
             <div class="d-flex justify-content-end">
-                <a href="{{ route('category.create') }}" class="btn btn-primary" <i class="fas fa-plus-circle"></i>
-                    Add New Category
+                <a href="{{ route('testimonial.create') }}" class="btn btn-primary" <i class="fas fa-plus-circle"></i>
+                    Add New Testimonial
                 </a>
             </div>
         </div>
@@ -34,18 +33,22 @@
                         <tr>
                             <th scope="col">SI</th>
                             <th scope="col">Last Modified</th>
-                            <th scope="col">Category Name</th>
-                            <th scope="col">Category Slug</th>
+                            <th scope="col">Client Image</th>
+                            <th scope="col">Client Name</th>
+                            <th scope="col">Client Designation</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($categories as $category)
+                        @foreach ($testimonials as $testimonial)
                             <tr>
-                                <th scope="row"> {{ $categories->firstItem() + $loop->index }}</th>
-                                <td>{{ $category->updated_at->format('d M Y') }}</td>
-                                <td>{{ $category->title }}</td>
-                                <td>{{ $category->slug }}</td>
+                                <th scope="row"> {{ $testimonials->firstItem() + $loop->index }}</th>
+                                <td>{{ $testimonial->updated_at->format('d M Y') }}</td>
+                                <td>
+                                    <img src="{{ asset('uploads/testimonials') }}/{{ $testimonial->client_image }}"
+                                        alt="" class="img-fluid rounded-circle" width="100px" height="100px" </td>
+                                <td>{{ $testimonial->client_name }}</td>
+                                <td>{{ $testimonial->client_designation }}</td>
                                 <td>
                                     <div class="dropdown">
                                         <button class="btn btn-secondary dropdown-toggle" type"button"
@@ -55,12 +58,13 @@
                                         <ul class="dropdown-menu">
                                             <li>
                                                 <a class="dropdown-item"
-                                                    href="{{ route('category.edit', $category->slug) }}">
+                                                    href="{{ route('testimonial.edit', $testimonial->client_name_slug) }}">
                                                     <i class="fas fas-edit"></i> Edit
                                                 </a>
                                             </li>
                                             <li>
-                                                <form action="{{ route('category.destroy', $category->slug) }}"
+                                                <form
+                                                    action="{{ route('testimonial.destroy', $testimonial->client_name_slug) }}"
                                                     method="post">
                                                     @csrf
                                                     @method('DELETE')
