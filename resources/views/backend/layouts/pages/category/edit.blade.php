@@ -21,7 +21,8 @@
         <div class="col-12 mt-5">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('category.update', $category->slug) }}" method="POST">
+                    <form action="{{ route('category.update', $category->slug) }}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="mb-3">
@@ -31,6 +32,17 @@
                                 id="">
 
                             @error('title')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="category-image" class="form-label">Category Image</label>
+                            <input type="file" class="form-control" name="category_image" id="">
+
+                            @error('category_image')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

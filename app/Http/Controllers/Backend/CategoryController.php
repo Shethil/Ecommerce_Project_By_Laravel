@@ -8,6 +8,8 @@ use App\Http\Requests\CategoryUpdateRequest;
 use App\Models\Category;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Str;
+// use Intervention\Image\Facades\Image;
+use Image;
 
 class CategoryController extends Controller
 {
@@ -16,7 +18,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::latest('id')->select(['id', 'title', 'slug', 'updated_at'])->paginate();
+        $categories = Category::latest('id')->select(['id', 'category_image', 'title', 'slug', 'updated_at'])->paginate();
         // return $categories;
         return view('backend.layouts.pages.category.index', compact('categories'));
     }
@@ -34,10 +36,13 @@ class CategoryController extends Controller
      */
     public function store(CategoryStoreRequest $request)
     {
-        Category::create([
+        // dd($request->all());
+        $category = Category::create([
             'title' => $request->title,
             'slug' => Str::slug($request->title),
         ]);
+
+        $this->image_upload($request, $category->id);
 
         Toastr::success('Data Store Successfully');
         return redirect()->route('category.index');
@@ -77,6 +82,8 @@ class CategoryController extends Controller
             'is_active' => $request->filled('is_active'),
         ]);
 
+        $this->image_upload($request, $category->id);
+
         Toastr::success('Data Updated Successfully');
         return redirect()->route('category.index');
     }
@@ -86,8 +93,41 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        $category = Category::whereSlug($id)->first()->delete();
+        $category = Category::whereSlug($id)->first();
+
+        if ($category->category_image) {
+            $photo_location = 'uploads/category/' . $category->category_image;
+            unlink($photo_location);
+        }
+
+        $category->delete();
+
         Toastr::success('Data Delete Successfully');
         return redirect()->route('category.index');
+    }
+
+    public function image_upload($request, $item_id)
+    {
+
+        $category = Category::findorFail($item_id);
+
+        if ($request->hasFile('category_image')) {
+
+            if ($category->category_image != 'default-image.jpg') {
+                $photo_location = 'public/uploads/category/';
+                $old_photo_location = $photo_location .
+                $category->category_image;
+                unlink(base_path($old_photo_location));
+            }
+            $photo_location = 'public/uploads/category/';
+            $uploaded_photo = $request->file('category_image');
+            $new_photo_name = $category->id . '.' .
+            $uploaded_photo->getClientOriginalExtension();
+            $new_photo_location = $photo_location . $new_photo_name;
+            Image::make($uploaded_photo)->resize(105, 105)->save(base_path($new_photo_location), 40);
+            $check = $category->update([
+                'category_image' => $new_photo_name,
+            ]);
+        }
     }
 }
