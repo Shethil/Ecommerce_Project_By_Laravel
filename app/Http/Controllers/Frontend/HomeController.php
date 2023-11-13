@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Product;
 use App\Models\Testimonial;
 
 class HomeController extends Controller
@@ -22,7 +23,12 @@ class HomeController extends Controller
             ->select(['id', 'title', 'category_image', 'slug'])
             ->get();
 
+        $products = Product::where('is_active', 1)
+            ->latest('id')
+            ->select('id', 'name', 'slug', 'product_price', 'product_stock', 'product_rating', 'product_image')
+            ->paginate(12);
+
         // return $categories;
-        return view('frontend.pages.home', compact('testimonials', 'categories'));
+        return view('frontend.pages.home', compact('testimonials', 'categories', 'products'));
     }
 }
