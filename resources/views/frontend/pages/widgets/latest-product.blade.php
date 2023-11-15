@@ -26,15 +26,15 @@
                             </div>
                         </div>
                         <div class="product-content">
-                            <h3><a href="single-product.html">{{ $product->name }}t</a></h3>
-                            <p class="pull-left">${{ $product->product_price }}
+                            <h3><a {{--  href="{{ route('productdetails.page', ['product_slug' => product->slug]) }}">{{ $product->name }}t</a>  --}} </h3>
+                                    <p class="pull-left">${{ $product->product_price }}
 
-                            </p>
-                            <ul class="pull-right d-flex">
-                                @for ($i = 0; $i < $product->product_rating; $i++)
-                                    <li><i class="fa fa-star"></i></li>
-                                @endfor
-                            </ul>
+                                    </p>
+                                    <ul class="pull-right d-flex">
+                                        @for ($i = 0; $i < $product->product_rating; $i++)
+                                            <li><i class="fa fa-star"></i></li>
+                                        @endfor
+                                    </ul>
                         </div>
                     </div>
                 </li>

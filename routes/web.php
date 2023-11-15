@@ -23,7 +23,9 @@ use Illuminate\Support\Facades\Route;
 //     return view('frontend.pages.home');
 // });
 
-Route::get('/', [HomeController::class, 'home']);
+Route::get('/', [HomeController::class, 'home'])->name('home');
+Route::get('/shop', [HomeController::class, 'shopPage'])->name('shop.page');
+Route::get('/single-product/{product_slug}', [HomeController::class, 'productDetails'])->name('productdetails.page');
 
 Route::get('/dashboard', function () {
     return view('backend.layouts.pages.dashboard');
