@@ -17,7 +17,7 @@
                             <ul class="dropdown_style">
                                 <li><a href="{{ route('login') }}">Login</a></li>
                                 <li><a href="register.html">Register</a></li>
-                                <li><a href="cart.html">Cart</a></li>
+                                <li><a href="{{ route('cart.page') }}">Cart</a></li>
                                 <li><a href="checkout.html">Checkout</a></li>
                                 <li><a href="wishlist.html">wishlist</a></li>
                             </ul>
@@ -48,7 +48,7 @@
                                 <ul class="dropdown_style">
                                     <li><a href="{{ route('shop.page') }}">Shop Page</a></li>
                                     <li><a href="single-product.html">Product Details</a></li>
-                                    <li><a href="cart.html">Shopping cart</a></li>
+                                    <li><a href="{{ route('cart.page') }}">Shopping cart</a></li>
                                     <li><a href="checkout.html">Checkout</a></li>
                                     <li><a href="wishlist.html">Wishlist</a></li>
                                 </ul>
@@ -58,7 +58,7 @@
                                 <ul class="dropdown_style">
                                     <li><a href="about.html">About Page</a></li>
                                     <li><a href="single-product.html">Product Details</a></li>
-                                    <li><a href="cart.html">Shopping cart</a></li>
+                                    <li><a href="{{ route('cart.page') }}">Shopping cart</a></li>
                                     <li><a href="checkout.html">Checkout</a></li>
                                     <li><a href="wishlist.html">Wishlist</a></li>
                                     <li><a href="faq.html">FAQ</a></li>
@@ -81,29 +81,7 @@
                         <li>
                             <a href="javascript:void(0);"><i class="flaticon-like"></i> <span>2</span></a>
                             <ul class="cart-wrap dropdown_style">
-                                <li class="cart-items">
-                                    <div class="cart-img">
-                                        <img src="{{ asset('assets/frontend') }}/images/cart/1.jpg" alt="">
-                                    </div>
-                                    <div class="cart-content">
-                                        <a href="cart.html">Pure Nature Product</a>
-                                        <span>QTY : 1</span>
-                                        <p>$35.00</p>
-                                        <i class="fa fa-times"></i>
-                                    </div>
-                                </li>
-                                <li class="cart-items">
-                                    <div class="cart-img">
-                                        <img src="{{ asset('assets/frontend') }}/images/cart/3.jpg" alt="">
-                                    </div>
-                                    <div class="cart-content">
-                                        <a href="cart.html">Pure Nature Product</a>
-                                        <span>QTY : 1</span>
-                                        <p>$35.00</p>
-                                        <i class="fa fa-times"></i>
-                                    </div>
-                                </li>
-                                <li>Subtotol: <span class="pull-right">$70.00</span></li>
+
                                 <li>
                                     <button>Check Out</button>
                                 </li>
@@ -112,40 +90,29 @@
                         <li>
                             <a href="javascript:void(0);"><i class="flaticon-shop"></i> <span>3</span></a>
                             <ul class="cart-wrap dropdown_style">
-                                <li class="cart-items">
-                                    <div class="cart-img">
-                                        <img src="{{ asset('assets/frontend') }}/images/cart/1.jpg" alt="">
-                                    </div>
-                                    <div class="cart-content">
-                                        <a href="cart.html">Pure Nature Product</a>
-                                        <span>QTY : 1</span>
-                                        <p>$35.00</p>
-                                        <i class="fa fa-times"></i>
-                                    </div>
-                                </li>
-                                <li class="cart-items">
-                                    <div class="cart-img">
-                                        <img src="{{ asset('assets/frontend') }}/images/cart/3.jpg" alt="">
-                                    </div>
-                                    <div class="cart-content">
-                                        <a href="cart.html">Pure Nature Product</a>
-                                        <span>QTY : 1</span>
-                                        <p>$35.00</p>
-                                        <i class="fa fa-times"></i>
-                                    </div>
-                                </li>
-                                <li class="cart-items">
-                                    <div class="cart-img">
-                                        <img src="{{ asset('assets/frontend') }}/images/cart/2.jpg" alt="">
-                                    </div>
-                                    <div class="cart-content">
-                                        <a href="cart.html">Pure Nature Product</a>
-                                        <span>QTY : 1</span>
-                                        <p>$35.00</p>
-                                        <i class="fa fa-times"></i>
-                                    </div>
-                                </li>
-                                <li>Subtotol: <span class="pull-right">$70.00</span></li>
+                                @php
+                                    $carts = \Gloudemans\Shoppingcart\Facades\Cart::content();
+                                    $total_price = \Gloudemans\Shoppingcart\Facades\Cart::subtotal();
+                                @endphp
+
+                                @foreach ($carts as $cart)
+                                    <li class="cart-items">
+                                        <div class="cart-img">
+                                            <img src="{{ asset('uploads/product') }}/{{ $cart->options->product_image }}"
+                                                alt="" height="50" width="50">
+                                        </div>
+                                        <div class="cart-content">
+                                            <a href="{{ route('cart.page') }}">{{ $cart->name }}</a>
+                                            <span>QTY : {{ $cart->qty }}</span>
+                                            <p>${{ $cart->qty * $cart->price }}</p>
+                                            <a href="{{ route('removefrom.cart', ['cart_id' => $cart->rowId]) }}" <i
+                                                class="fa fa-times"></i>
+                                            </a>
+                                        </div>
+                                    </li>
+                                @endforeach
+
+                                <li>Subtotol: <span class="pull-right">${{ $total_price }}</span></li>
                                 <li>
                                     <button>Check Out</button>
                                 </li>
@@ -177,7 +144,7 @@
                                 <ul aria-expanded="false">
                                     <li><a href="shop.html">Shop Page</a></li>
                                     <li><a href="single-product.html">Product Details</a></li>
-                                    <li><a href="cart.html">Shopping cart</a></li>
+                                    <li><a href="{{ route('cart.page') }}">Shopping cart</a></li>
                                     <li><a href="checkout.html">Checkout</a></li>
                                     <li><a href="wishlist.html">Wishlist</a></li>
                                 </ul>
@@ -187,7 +154,7 @@
                                 <ul aria-expanded="false">
                                     <li><a href="about.html">About Page</a></li>
                                     <li><a href="single-product.html">Product Details</a></li>
-                                    <li><a href="cart.html">Shopping cart</a></li>
+                                    <li><a href="{{ route('cart.page') }}">Shopping cart</a></li>
                                     <li><a href="checkout.html">Checkout</a></li>
                                     <li><a href="wishlist.html">Wishlist</a></li>
                                     <li><a href="faq.html">FAQ</a></li>
