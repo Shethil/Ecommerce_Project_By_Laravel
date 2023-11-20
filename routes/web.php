@@ -23,10 +23,6 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-// Route::get('/', function () {
-//     return view('frontend.pages.home');
-// });
-
 Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('/shop', [HomeController::class, 'shopPage'])->name('shop.page');
 Route::get('/single-product/{product_slug}', [HomeController::class, 'productDetails'])->name('productdetails.page');
@@ -40,7 +36,7 @@ Route::post('/customer-register', [RegisterController::class, 'registerStore'])-
 Route::get('/customer-login', [RegisterController::class, 'loginPage'])->name('login.page');
 Route::post('/customer-login', [RegisterController::class, 'loginStore'])->name('login.store');
 
-Route::prefix('customer/')->middleware('auth')->group(function () {
+Route::prefix('customer/')->middleware('auth', 'is_customer')->group(function () {
     Route::get('dashboard', [CustomerController::class, 'dashboard'])->name('customer.dashboard');
     Route::get('logout', [RegisterController::class, 'logout'])->name('customer.logout');
 });
