@@ -75,7 +75,6 @@ class CartController extends Controller
             $subTotalString = Cart::subtotal();
             // Remove formatting and convert to float
             $subTotalFloat = floatval(str_replace(',', '', $subTotalString));
-
             if ($check_validity) {
 
                 Session::put('coupon', [

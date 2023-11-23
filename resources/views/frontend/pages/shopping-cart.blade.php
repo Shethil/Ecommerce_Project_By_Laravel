@@ -85,7 +85,7 @@
                                         <li><span class="pull-left"> Total </span> ${{ $total_price }}</li>
                                     @endif
                                 </ul>
-                                <a href="checkout.html">Proceed to Checkout</a>
+                                <a href="{{ route('customer.checkoutpage') }}">Proceed to Checkout</a>
                             </div>
                         </div>
                     </div>
