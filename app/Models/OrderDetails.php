@@ -11,4 +11,9 @@ class OrderDetails extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded = ['id'];
+
+    public function product()
+    {
+        return $this->hasOne(Product::class, 'id', 'product_id');
+    }
 }

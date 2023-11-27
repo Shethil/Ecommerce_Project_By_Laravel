@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderStoreRequest;
+use App\Mail\PurchaseConfirm;
 use App\Models\Billing;
 use App\Models\District;
 use App\Models\Order;
@@ -13,6 +14,7 @@ use App\Models\Upazila;
 use Brian2694\Toastr\Facades\Toastr;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
 class CheckoutController extends Controller
@@ -75,6 +77,13 @@ class CheckoutController extends Controller
         // forceDelete from cart table
         Cart::destroy();
         Session::forget('coupon');
+
+        $order = Order::whereId($order->id)->with(['billing', 'orderDetails'])->get();
+
+        // dd($order);
+        // dd($request->email);
+
+        Mail::to($request->email)->send(new PurchaseConfirm($order));
 
         Toastr::success('Your Order placed successfully!!!', 'Success');
 
