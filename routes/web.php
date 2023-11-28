@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\CouponController;
+use App\Http\Controllers\Backend\CustomerController as BackendCustomerController;
+use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\TestimonialController;
 use App\Http\Controllers\Frontend\Auth\RegisterController;
@@ -72,5 +74,7 @@ Route::resource('category', CategoryController::class);
 Route::resource('testimonial', TestimonialController::class);
 Route::resource('product', ProductController::class);
 Route::resource('coupon', CouponController::class);
+Route::get('order-list', [OrderController::class, 'index'])->name('admin.orderlist');
+Route::get('customer-list', [BackendCustomerController::class, 'index'])->name('admin.customerlist');
 
 require __DIR__ . '/auth.php';
