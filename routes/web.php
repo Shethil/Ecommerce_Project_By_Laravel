@@ -3,6 +3,7 @@
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\CouponController;
 use App\Http\Controllers\Backend\CustomerController as BackendCustomerController;
+use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\TestimonialController;
@@ -54,9 +55,9 @@ Route::prefix('customer/')->middleware('auth', 'is_customer')->group(function ()
     Route::post('placeorder', [CheckoutController::class, 'placeOrder'])->name('customer.placeorder');
 });
 
-Route::get('/dashboard', function () {
-    return view('backend.layouts.pages.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/logout', function () {
     Auth::logout();
